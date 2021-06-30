@@ -196,10 +196,7 @@ HVDC inverter pair,2030,FOM,2,%/year,Hagspiel
 Gravitricity Energy,2030,investment,344.25,EUR/kWh,Schmidt 2018
 Gravitricity Energy,2030,FOM,0.5,%/year,Schmidt 2018
 Gravitricity Energy,2030,lifetime,25,years,Schmidt 2018
-Gravitricity Energy,2030,efficiency,85,%,Schmidt 2018
-Gravitricity Energy,2030,discount rate,7,%,
 Gravitricity Power,2030,investment,678.78,EUR/kW,Schmidt 2018
 Gravitricity Power,2030,FOM,0.5,%/year,Schmidt 2018
 Gravitricity Power,2030,lifetime,25,years,Schmidt 2018
 Gravitricity Power,2030,efficiency,85,%,Schmidt 2018
-Gravitric Power,2030,discount rate,7,%,
