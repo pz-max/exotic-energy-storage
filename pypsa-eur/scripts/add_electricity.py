@@ -179,6 +179,18 @@ def load_costs(Nyears=1., tech_costs=None, config=None, elec_config=None):
         costs_for_storage(costs.loc["hydrogen storage"], costs.loc["fuel cell"],
                           costs.loc["electrolysis"], max_hours=max_hours['H2'])
 
+    costs.loc["gravitricity"] = \
+        costs_for_storage(costs.loc["Gravitricity Energy"], costs.loc["Gravitricity Power"], 
+                          max_hours=max_hours["gravitricity"])
+
+#    costs.loc["thermal battery"] = \
+#        costs_for_storage(costs.loc["Thermal Battery Energy"], costs.loc["Thermal Battery Power"], 
+#                          max_hours=max_hours["thermal battery"])
+
+#    costs.loc["flow battery"] = \
+#        costs_for_storage(costs.loc["Flow Battery Energy"], costs.loc["Flow Battery Power"], 
+#                          max_hours=max_hours["flow battery"])
+
     for attr in ('marginal_cost', 'capital_cost'):
         overwrites = config.get(attr)
         if overwrites is not None:
