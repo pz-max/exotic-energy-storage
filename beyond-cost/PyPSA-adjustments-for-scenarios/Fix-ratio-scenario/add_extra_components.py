@@ -170,6 +170,58 @@ def attach_stores(n, costs):
                capital_cost=costs.at['Gravitricity Power', 'capital_cost'],
                p_nom_extendable=True)
 
+    if 'uhts' in carriers:
+        b_buses_i = n.madd("Bus", buses_i + " uhts", carrier="uhts", **bus_sub_dict)
+
+        n.madd("Store", b_buses_i,
+               bus=b_buses_i,
+               carrier='uhts',
+               e_cyclic=True,
+               e_nom_extendable=True,
+               capital_cost=costs.at['Thermal Battery Energy', 'capital_cost'])
+
+        n.madd("Link", b_buses_i + " charger",
+               bus0=buses_i,
+               bus1=b_buses_i,
+               carrier='uhts charger',
+               efficiency=costs.at['Thermal Battery Power', 'efficiency'],
+               capital_cost=costs.at['Thermal Battery Power', 'capital_cost'],
+               p_nom_extendable=True)
+
+        n.madd("Link", b_buses_i + " discharger",
+               bus0=b_buses_i,
+               bus1=buses_i,
+               carrier='uhts discharger',
+               efficiency=costs.at['Thermal Battery Power','efficiency'],
+               capital_cost=costs.at['Thermal Battery Power', 'capital_cost'],
+               p_nom_extendable=True)
+
+    if 'vrfb' in carriers:
+        b_buses_i = n.madd("Bus", buses_i + " vrfb", carrier="vrfb", **bus_sub_dict)
+
+        n.madd("Store", b_buses_i,
+               bus=b_buses_i,
+               carrier='vrfb',
+               e_cyclic=True,
+               e_nom_extendable=True,
+               capital_cost=costs.at['Flow Battery Energy', 'capital_cost'])
+
+        n.madd("Link", b_buses_i + " charger",
+               bus0=buses_i,
+               bus1=b_buses_i,
+               carrier='vrfb charger',
+               efficiency=costs.at['Flow Battery Power', 'efficiency'],
+               capital_cost=costs.at['Flow Battery Power', 'capital_cost'],
+               p_nom_extendable=True)
+
+        n.madd("Link", b_buses_i + " discharger",
+               bus0=b_buses_i,
+               bus1=buses_i,
+               carrier='vrfb discharger',
+               efficiency=costs.at['Flow Battery Power','efficiency'],
+               capital_cost=costs.at['Flow Battery Power', 'capital_cost'],
+               p_nom_extendable=True)
+
 def attach_hydrogen_pipelines(n, costs):
     elec_opts = snakemake.config['electricity']
     ext_carriers = elec_opts['extendable_carriers']
