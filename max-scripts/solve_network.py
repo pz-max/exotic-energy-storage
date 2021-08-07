@@ -211,13 +211,40 @@ def add_SAFE_constraints(n, config):
 
 
 def add_battery_constraints(n):
-    nodes = n.buses.index[n.buses.carrier == "battery"]
-    if nodes.empty or ('Link', 'p_nom') not in n.variables.index:
+    b_nodes = n.buses.index[n.buses.carrier == "battery"]
+    if b_nodes.empty or ('Link', 'p_nom') not in n.variables.index:
         return
     link_p_nom = get_var(n, "Link", "p_nom")
-    lhs = linexpr((1,link_p_nom[nodes + " charger"]),
-                  (-n.links.loc[nodes + " discharger", "efficiency"].values,
-                   link_p_nom[nodes + " discharger"].values))
+    lhs = linexpr((1,link_p_nom[b_nodes + " charger"]),
+                  (-n.links.loc[b_nodes + " discharger", "efficiency"].values,
+                   link_p_nom[b_nodes + " discharger"].values))
+    define_constraints(n, lhs, "=", 0, 'Link', 'charger_ratio')
+
+    v_nodes = n.buses.index[n.buses.carrier == "vrfb"]
+    if v_nodes.empty or ('Link', 'p_nom') not in n.variables.index:
+        return
+    link_p_nom = get_var(n, "Link", "p_nom")
+    lhs = linexpr((1,link_p_nom[v_nodes + " charger"]),
+                  (-n.links.loc[v_nodes + " discharger", "efficiency"].values,
+                   link_p_nom[v_nodes + " discharger"].values))
+    define_constraints(n, lhs, "=", 0, 'Link', 'charger_ratio')
+
+    g_nodes = n.buses.index[n.buses.carrier == "gravitricity"]
+    if g_nodes.empty or ('Link', 'p_nom') not in n.variables.index:
+        return
+    link_p_nom = get_var(n, "Link", "p_nom")
+    lhs = linexpr((1,link_p_nom[g_nodes + " charger"]),
+                  (-n.links.loc[g_nodes + " discharger", "efficiency"].values,
+                   link_p_nom[g_nodes + " discharger"].values))
+    define_constraints(n, lhs, "=", 0, 'Link', 'charger_ratio')
+
+    t_nodes = n.buses.index[n.buses.carrier == "ptes"]
+    if t_nodes.empty or ('Link', 'p_nom') not in n.variables.index:
+        return
+    link_p_nom = get_var(n, "Link", "p_nom")
+    lhs = linexpr((1,link_p_nom[t_nodes + " charger"]),
+                  (-n.links.loc[t_nodes + " discharger", "efficiency"].values,
+                   link_p_nom[t_nodes + " discharger"].values))
     define_constraints(n, lhs, "=", 0, 'Link', 'charger_ratio')
 
 def add_vrfb_constraints(n):
